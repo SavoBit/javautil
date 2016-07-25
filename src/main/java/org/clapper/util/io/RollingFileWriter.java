@@ -235,6 +235,7 @@ public class RollingFileWriter extends PrintWriter
      */
     public interface RolloverCallback
     {
+        public void rolledOverFileInfo(String primaryFile);
         /**
          * Return a message to be written to the rolled-over file and the
          * newly-opened primary file at the moment of roll-over.
@@ -1115,6 +1116,10 @@ public class RollingFileWriter extends PrintWriter
             // Attempt to move the source file to the target slot.
 
             renameFile (sourceFile, targetFile);
+            if (callback != null ) {
+                callback.rolledOverFileInfo(targetFile.getPath());
+            }
+
         }
 
         String rollOverMsg = null;
@@ -1143,6 +1148,10 @@ public class RollingFileWriter extends PrintWriter
 
                     rollingFileWriter.printlnNoRoll (rollOverMsg);
                 }
+
+
+
+
             }
 
             log.debug ("Closing full primary file \"" + primaryFile + "\".");
@@ -1156,6 +1165,8 @@ public class RollingFileWriter extends PrintWriter
                                               null);
         renameFile (primaryFile, targetFile);
 
+        if (callback != null) {
+        }
         if (compressionType == Compression.COMPRESS_BACKUPS)
             gzipFile (targetFile);
 

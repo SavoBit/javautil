@@ -114,6 +114,11 @@ public class RollingFile
                               Public Methods
     \*----------------------------------------------------------------------*/
 
+    @Override
+    public void rolledOverFileInfo(String primaryFile) {
+        System.out.println(primaryFile);
+    }
+
     public String getRollOverMessage()
     {
         if (rollOverMsg != null)
